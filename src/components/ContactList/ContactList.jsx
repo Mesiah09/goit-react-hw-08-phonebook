@@ -1,12 +1,12 @@
-import ListItem from "./ListItem";
-import PropTypes from "prop-types";
-import s from "./contact-list.module.scss";
+import ListItem from './ListItem';
+import PropTypes from 'prop-types';
+import s from './contact-list.module.scss';
+
 export default function ContactList({ contacts, onClick }) {
-  return (
-    <ul className={s.list}>
-      <ListItem contacts={contacts} onClick={onClick} />
-    </ul>
-  );
+  const elements = contacts.map(({ name, id, number }) => (
+    <ListItem key={id} options={[name, number, id]} onClick={onClick} />
+  ));
+  return <ul className={s.list}>{elements}</ul>;
 }
 ContactList.defaultProps = {
   onClick: function () {},

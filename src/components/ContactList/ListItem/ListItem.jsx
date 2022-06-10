@@ -1,16 +1,25 @@
+import PropTypes from 'prop-types';
+
 import s from './list-item.module.scss';
-export default function ListItem({ contacts, onClick }) {
-  return contacts.map(e => (
-    <li className={s.listItem} key={e.id}>
-      {e.name} - {e.number}{' '}
+
+export default function ListItem({ options, onClick }) {
+  const [name, number, id] = options;
+  return (
+    <li className={s.listItem} key={id}>
+      {name} - {number}{' '}
       <button
         className={s.button}
         onClick={() => {
-          onClick(e.name);
+          onClick(name);
         }}
       >
         Delete
       </button>
     </li>
-  ));
+  );
 }
+
+ListItem.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  onClick: PropTypes.func.isRequired,
+};
