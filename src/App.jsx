@@ -1,49 +1,40 @@
-import { Component } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { nanoid } from 'nanoid';
 import Form from './components/Form';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 
-export default class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export function App() {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const one = useRef(true);
 
-  componentDidMount() {
-    const data = localStorage.getItem('contacts');
-    const contacts = JSON.parse(data);
-    if (contacts?.length) {
-      this.setState({
-        contacts: contacts,
-      });
+  useEffect(() => {
+    if (one.current) {
+      const data = JSON.parse(localStorage.getItem('contacts'));
+      if (data?.length) setContacts(data);
+      one.current = false;
+    } else {
+      localStorage.setItem('contacts', JSON.stringify(contacts));
     }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts.length !== this.state.contacts.length) {
-      const contacts = JSON.stringify(this.state.contacts);
-      localStorage.setItem('contacts', contacts);
-    }
-  }
-
-  addContact = data => {
-    if (this.state.contacts.find(contact => contact.name === data.name)) {
+  }, [contacts]);
+  //
+  const addContact = data => {
+    if (contacts.find(contact => contact.name === data.name)) {
       alert(`${data.name} already exists`);
       return;
     }
-    this.setState(prev => {
+    setContacts(prev => {
       const contact = {
         id: nanoid(),
         name: data.name,
         number: data.number,
       };
-      return {
-        contacts: [...prev.contacts, contact],
-      };
+      return [...prev, contact];
     });
   };
-  getFilteredBooks() {
-    const { filter, contacts } = this.state;
+
+  function getFilteredContacts() {
     if (!filter) {
       return contacts;
     }
@@ -51,29 +42,25 @@ export default class App extends Component {
       name.toLowerCase().includes(filter.toLowerCase())
     );
   }
-  filter = e => {
-    this.setState({ filter: e.target.value });
-  };
-  delete = name => {
-    this.setState(prev => {
-      return {
-        contacts: prev.contacts.filter(contact => contact.name !== name),
-      };
-    });
+
+  const filterContacts = e => {
+    setFilter(e.target.value);
   };
 
-  render() {
-    const data = this.getFilteredBooks();
-    return (
-      <div className="app">
-        <div className="phone-book">
-          <h1>Phonebook</h1>
-          <Form onSubmit={this.addContact} />
-          <h2>Contacts</h2>
-          <Filter onChange={this.filter} value={this.state.filter} />
-          <ContactList contacts={data} onClick={this.delete} />
-        </div>
+  const remove = name => {
+    setContacts(prev => prev.filter(contact => contact.name !== name));
+  };
+
+  const data = getFilteredContacts();
+  return (
+    <div className="app">
+      <div className="phone-book">
+        <h1>Phonebook</h1>
+        <Form onSubmit={addContact} />
+        <h2>Contacts</h2>
+        <Filter onChange={filterContacts} value={filter} />
+        <ContactList contacts={data} onClick={remove} />
       </div>
-    );
-  }
+    </div>
+  );
 }
