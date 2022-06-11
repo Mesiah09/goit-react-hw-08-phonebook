@@ -1,44 +1,30 @@
-import { useState, useEffect, useRef } from 'react';
-import { nanoid } from 'nanoid';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { actions } from 'redux/slice';
 import Form from './components/Form';
 import ContactList from './components/ContactList';
 import Filter from './components/Filter';
 
 export function App() {
-  const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
-  const one = useRef(true);
+  const items = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (one.current) {
-      const data = JSON.parse(localStorage.getItem('contacts'));
-      if (data?.length) setContacts(data);
-      one.current = false;
-    } else {
-      localStorage.setItem('contacts', JSON.stringify(contacts));
-    }
-  }, [contacts]);
-  //
   const addContact = data => {
-    if (contacts.find(contact => contact.name === data.name)) {
+    if (items.find(contact => contact.name === data.name)) {
       alert(`${data.name} already exists`);
       return;
     }
-    setContacts(prev => {
-      const contact = {
-        id: nanoid(),
-        name: data.name,
-        number: data.number,
-      };
-      return [...prev, contact];
-    });
+    const action = actions.addContact(data);
+    dispatch(action);
   };
 
   function getFilteredContacts() {
     if (!filter) {
-      return contacts;
+      return items;
     }
-    return contacts.filter(({ name }) =>
+    return items.filter(({ name }) =>
       name.toLowerCase().includes(filter.toLowerCase())
     );
   }
@@ -47,8 +33,9 @@ export function App() {
     setFilter(e.target.value);
   };
 
-  const remove = name => {
-    setContacts(prev => prev.filter(contact => contact.name !== name));
+  const remove = data => {
+    const action = actions.removeContact(data);
+    dispatch(action);
   };
 
   const data = getFilteredContacts();
