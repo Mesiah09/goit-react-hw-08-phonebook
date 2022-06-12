@@ -1,0 +1,32 @@
+.item {
+  display: flex;
+  list-style: none;
+  padding: 12px;
+  justify-content: space-between;
+  padding: 20px 12px;
+}
+
+.item:nth-child(odd) {
+  background-color: white;
+
+}
+
+
+.btn {
+  color: black;
+  border: none;
+  font-size: 18px;
+  padding: 6px;
+  border: 1px solid silver;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: white;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  font-size: 20px
+}

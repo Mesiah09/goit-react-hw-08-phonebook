@@ -1,26 +1,29 @@
-import PropTypes from "prop-types";
-import s from "./filter.module.scss";
-export default function Filter({ onChange, value }) {
+import { memo } from 'react';
+import PropTypes from 'prop-types';
+
+import s from './filter.module.scss';
+
+const Filter = ({ handleChange, filter }) => {
   return (
     <div className={s.filter}>
-      <label htmlFor="filter">Find contacts by name</label>
-      <br />
+      <label htmlFor="">Find contacts by name: </label>
       <input
         className={s.input}
-        onChange={onChange}
         type="text"
+        value={filter}
         name="filter"
-        id="filter"
-        value={value}
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+        required
+        onChange={handleChange}
       />
     </div>
   );
-}
-Filter.defaultProps = {
-  onChange: function () {},
-  value: "",
 };
+
+export default memo(Filter);
+
 Filter.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  filter: PropTypes.string.isRequired,
 };

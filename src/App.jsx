@@ -1,53 +1,78 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { actions } from 'redux/slice';
-import Form from './components/Form';
-import ContactList from './components/ContactList';
-import Filter from './components/Filter';
+import { useState, useEffect, useCallback } from 'react';
 
-export function App() {
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+
+import {
+  getContacts,
+  getLoading,
+  getError,
+} from './redux/contacts/contacts-selectors';
+
+import * as operations from 'redux/contacts/contacts-operations';
+
+import Form from './components/Form';
+import Filter from './components/Filter';
+import ContactList from './components/ContactList';
+import s from './app.module.scss';
+
+const App = () => {
+  const contacts = useSelector(getContacts, shallowEqual);
+  const loading = useSelector(getLoading, shallowEqual);
+  const error = useSelector(getError, shallowEqual);
   const [filter, setFilter] = useState('');
-  const items = useSelector(getContacts);
+
   const dispatch = useDispatch();
 
-  const addContact = data => {
-    if (items.find(contact => contact.name === data.name)) {
-      alert(`${data.name} already exists`);
-      return;
-    }
-    const action = actions.addContact(data);
-    dispatch(action);
+  useEffect(() => {
+    dispatch(operations.fetchContacts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleChange = useCallback(
+    e => {
+      setFilter(e.target.value);
+    },
+    [setFilter]
+  );
+
+  const deleteContact = id => {
+    dispatch(operations.deleteContact(id));
   };
 
-  function getFilteredContacts() {
+  const getFilteredContacts = useCallback(() => {
     if (!filter) {
-      return items;
+      return contacts;
     }
-    return items.filter(({ name }) =>
-      name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
+    const filterToLover = filter.toLowerCase();
+    const filteredContacts = contacts.filter(({ name }) => {
+      const result = name.toLowerCase().includes(filterToLover);
+      return result;
+    });
+    return filteredContacts;
+  }, [contacts, filter]);
 
-  const filterContacts = e => {
-    setFilter(e.target.value);
+  const addContactBySubmit = props => {
+    dispatch(operations.addContact(props));
   };
 
-  const remove = data => {
-    const action = actions.removeContact(data);
-    dispatch(action);
-  };
-
-  const data = getFilteredContacts();
   return (
-    <div className="app">
-      <div className="phone-book">
+    <div className={s.app}>
+      <div className={s.phonebook}>
         <h1>Phonebook</h1>
-        <Form onSubmit={addContact} />
+        <Form addContactBySubmit={addContactBySubmit} />
         <h2>Contacts</h2>
-        <Filter onChange={filterContacts} value={filter} />
-        <ContactList contacts={data} onClick={remove} />
+        <Filter handleChange={handleChange} filter={filter} />
+        {error && <p>Whoops...Please try later</p>}
+        {loading && <p>Loading...</p>}
+        {Boolean(contacts.length) && (
+          <ContactList
+            contacts={getFilteredContacts()}
+            deleteContact={deleteContact}
+          />
+        )}
       </div>
     </div>
   );
-}
+};
+
+export default App;
