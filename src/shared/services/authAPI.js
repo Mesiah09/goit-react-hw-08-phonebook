@@ -4,9 +4,9 @@ const instance = axios.create({
   baseURL: 'https://connections-api.herokuapp.com/',
 });
 
-const addToken = token => {
+export const addToken = (token) => {
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
-};
+}
 
 const removeToken = () => {
     instance.defaults.headers.common.Authorization = ``;
@@ -30,7 +30,7 @@ const removeToken = () => {
     return data;
   };
 
-export const getCurrent = async token => {
+  export const getCurrent = async (token) => {
     addToken(token);
     try {
         const { data } = await instance.get("/users/current");
