@@ -6,13 +6,13 @@ import {
   getContacts,
   getLoading,
   getError,
-} from './redux/contacts/contacts-selectors';
+} from '../redux/contacts/contacts-selectors';
 
-import * as operations from 'redux/contacts/contacts-operations';
+import * as operations from 'redux/contacts/contacts/contacts-operations';
 
-import Form from './components/Form';
-import Filter from './components/Filter';
-import ContactList from './components/ContactList';
+import Form from './ContactForm';
+import Filter from './PhoneBook/Filter';
+import ContactList from './ContactList';
 import s from './app.module.scss';
 
 const App = () => {
