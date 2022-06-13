@@ -1,41 +1,50 @@
-// import * as API from '../../shared/services/contactsAPI';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { getContacts, pushContact, deleteContact } from '../../shared/services/contactsAPI';
+import * as API from '../../shared/services/contacts';
 
 export const fetchContacts = createAsyncThunk(
-    'contacts/fetchContacts',
-    async (token, { rejectWithValue }) => {
+    'contacts/fetch',
+    async (_, { rejectWithValue }) => {
         try {
-            const data = await getContacts(token);
+            const data = await API.getContacts();
             return data;
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error);
         }
     }
 );
 
 export const addContact = createAsyncThunk(
-    'contacts/addContact',
+    'contacts/add',
     async (data, { rejectWithValue }) => {
         try {
-            const contact = await pushContact(data);
-            return contact;
+            const newContact = await API.addContact(data);
+            return newContact;
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error);
         }
     },
-
+    {
+        condition: (data, { getState }) => {
+            const { contacts } = getState();
+            const dublicate = contacts.items.find(item => item.name === data.name);
+            if (dublicate) {
+                alert(`${data.name} is already in contacts.`);
+                return false;
+            }
+            return data;
+        }
+    }
 );
 
 export const removeContact = createAsyncThunk(
-    'contacts/removeContact',
-    async (data, { rejectWithValue }) => {
+    'contacts/remove',
+    async (id, { rejectWithValue }) => {
         try {
-            const contact = await deleteContact(data);
-            return contact;
+            await API.removeContact(id);
+            return id;
         } catch (error) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error);
         }
     }
 );

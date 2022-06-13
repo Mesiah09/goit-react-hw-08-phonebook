@@ -1,14 +1,15 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
-import useLogin from 'shared/hooks/useLogin';
+import useLogin from "shared/hooks/useLogin";
 
 const PrivateRoute = () => {
-  const isLoggedIn = useLogin();
-  if (!isLoggedIn) {
-    return <Navigate to="/login" />;
-  }
 
-  return <Outlet />;
+    const isLogin = useLogin();
+
+    if (!isLogin) {
+        return <Navigate to="/login"/>
+    }
+    return <Outlet />
 };
 
 export default PrivateRoute;

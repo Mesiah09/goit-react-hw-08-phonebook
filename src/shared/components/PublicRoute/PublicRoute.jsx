@@ -1,15 +1,15 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
-import useLogin from 'shared/hooks/useLogin';
+import useLogin from "shared/hooks/useLogin";
 
 const PublicRoute = () => {
-  const isLoggedIn = useLogin();
 
-  if (isLoggedIn) {
-    return <Navigate replace to="/contacts" />;
-  }
+    const isLogin = useLogin();
 
-  return <Outlet />;
+    if (isLogin) {
+        return <Navigate replace to="/phonebook" />
+    }
+    return <Outlet />
 };
 
 export default PublicRoute;

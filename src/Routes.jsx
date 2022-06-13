@@ -6,7 +6,7 @@ import PublicRoute from 'shared/components/PublicRoute';
 import HomePage from 'pages/HomePage';
 import LoginPage from 'pages/LoginPage';
 import RegisterPage from 'pages/RegisterPage';
-import PhonebookPage from 'pages/PhonebookPage';
+import PhoneBookPage from 'pages/PhonebookPage';
 
 const MyRoutes = () => {
   return (
@@ -19,7 +19,7 @@ const MyRoutes = () => {
       </Route>
 
       <Route element={<PrivateRoute />}>
-        <Route path="/phonebook" element={<PhonebookPage />} />
+        <Route path="/phonebook" element={<PhoneBookPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

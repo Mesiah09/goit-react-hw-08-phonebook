@@ -7,10 +7,10 @@ const initialState = {
     token: "",
     isLogin: false,
     loading: false,
-    error: null,
-}
+    error: null
+};
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
     name: "auth",
     initialState,
     extraReducers: {
@@ -19,46 +19,45 @@ export const authSlice = createSlice({
         [signup.rejected]: (store, { payload }) => ({ ...store, loading: false, error: payload }),
         [login.pending]: (store, _) => {
             store.loading = true;
-            store.error = null;
+            store.error = null
         },
         [login.fulfilled]: (store, { payload }) => {
             store.loading = false;
             store.isLogin = true;
             store.token = payload.token;
-            store.user = payload.user;
+            store.user = payload.user
         },
         [login.rejected]: (store, { payload }) => {
-
             store.loading = false;
-            store.error = payload;
+            store.error = payload
         },
         [getCurrentUser.pending]: (store, _) => {
             store.loading = true;
-            store.error = null;
+            store.error= null
         },
         [getCurrentUser.fulfilled]: (store, { payload }) => {
             store.loading = false;
             store.isLogin = true;
-            store.user = payload;
+            store.user = payload.name
         },
         [getCurrentUser.rejected]: (store, { payload }) => {
             store.loading = false;
             store.error = payload;
-            store.token = "";
+            store.token = ""
         },
         [logout.pending]: (store, _) => {
             store.loading = true;
-            store.error = null;
+            store.error = null
         },
         [logout.fulfilled]: (store) => {
             store.loading = false;
             store.isLogin = false;
             store.token = "";
-            store.user = {};
+            store.user = {}
         },
         [logout.rejected]: (store, { payload }) => {
             store.loading = false;
-            store.error = payload;
+            store.error = payload
         },
     }
 });
