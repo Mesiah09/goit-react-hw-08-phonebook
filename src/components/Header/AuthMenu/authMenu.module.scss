@@ -1,0 +1,23 @@
+.menu {
+ list-style: none;
+ font-size: 22px;
+ font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+display: flex; 
+}
+
+.item:not(:last-child) {
+    margin-right: 20px;
+}
+
+.link {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: black;
+}
+
+
+.link:hover,
+.link:active {
+    background-color: black;
+    color: white;
+}

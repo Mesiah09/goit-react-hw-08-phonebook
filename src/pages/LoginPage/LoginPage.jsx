@@ -7,8 +7,6 @@ import LoginForm from 'components/LoginForm';
 import { login } from 'redux/auth/auth-operations';
 import useLogin from 'shared/hooks/useLogin';
 
-// import styles from './login-page.module.scss';
-
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

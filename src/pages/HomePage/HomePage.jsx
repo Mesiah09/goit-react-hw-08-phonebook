@@ -1,5 +1,3 @@
-// import styles from './home-page.module.scss';
-
 const HomePage = () => {
   return (
     <div>

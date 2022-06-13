@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import s from './contact-list.module.scss';
+import s from './contactList.module.scss';
 
 const ContactList = ({ contacts, deleteContact }) => {
   const elements = contacts.map(({ id, name, number }) => (
