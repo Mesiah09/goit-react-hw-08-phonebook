@@ -6,12 +6,12 @@ import {
   getContacts,
   getLoading,
   getError,
-} from '../redux/contacts/contacts-selectors';
+} from './redux/contacts/contacts-selectors';
 
 import * as operations from 'redux/contacts/contacts/contacts-operations';
 
 import Form from './ContactForm';
-import Filter from './PhoneBook/Filter';
+import Filter from './components/PhoneBook/Filter';
 import ContactList from './ContactList';
 import s from './app.module.scss';
 
