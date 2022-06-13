@@ -3,11 +3,12 @@ import { Navigate, Outlet } from 'react-router-dom';
 import useLogin from 'shared/hooks/useLogin';
 
 const PublicRoute = () => {
-  const isLogin = useLogin();
+  const isLoggedIn = useLogin();
 
-  if (isLogin) {
-    return <Navigate replace to="/phonebook" />;
+  if (isLoggedIn) {
+    return <Navigate replace to="/contacts" />;
   }
+
   return <Outlet />;
 };
 

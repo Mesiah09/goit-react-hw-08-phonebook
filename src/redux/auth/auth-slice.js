@@ -7,8 +7,8 @@ const initialState = {
     token: "",
     isLogin: false,
     loading: false,
-    error: null
-};
+    error: null,
+}
 
 export const authSlice = createSlice({
     name: "auth",

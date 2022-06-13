@@ -3,11 +3,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 import useLogin from 'shared/hooks/useLogin';
 
 const PrivateRoute = () => {
-  const isLogin = useLogin();
-
-  if (!isLogin) {
+  const isLoggedIn = useLogin();
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
+
   return <Outlet />;
 };
 
