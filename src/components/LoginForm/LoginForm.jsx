@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { initialState } from './initialState';
 
+import s from './loginForm.module.scss';
+
 const LoginForm = ({ onSubmit }) => {
   const [form, setForm] = useState({ ...initialState });
 
@@ -24,7 +26,9 @@ const LoginForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="">Email:</label>
+        <label className={s.label} htmlFor="">
+          Email:
+        </label>
         <input
           value={email}
           onChange={handleChange}
@@ -35,7 +39,9 @@ const LoginForm = ({ onSubmit }) => {
         />
       </div>
       <div>
-        <label htmlFor="">Password:</label>
+        <label className={s.label} htmlFor="">
+          Password:
+        </label>
         <input
           value={password}
           onChange={handleChange}
@@ -45,7 +51,9 @@ const LoginForm = ({ onSubmit }) => {
           placeholder="Password"
         />
       </div>
-      <button type="submit">Login</button>
+      <button className={s.button} type="submit">
+        Login
+      </button>
     </form>
   );
 };
